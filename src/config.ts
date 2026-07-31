@@ -170,12 +170,31 @@ export const themeConfig: ThemeConfig = {
 
   // FOOTER SETTINGS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> START
   footer: {
-    // social links
-    links: [
+    // related websites
+    siteLinks: [
       {
         name: 'Revaea',
         url: 'https://revaea.com',
       },
+      {
+        name: 'Random Image',
+        url: 'https://api.revaea.com',
+      },
+      {
+        name: 'Redirect',
+        url: 'https://u.i0c.cc',
+      },
+      {
+        name: 'HLS',
+        url: 'https://hls.revaea.com',
+      },
+      {
+        name: 'Lab',
+        url: 'https://test.i0c.cc',
+      },
+    ],
+    // social links
+    links: [
       {
         name: 'RSS',
         url: '/atom.xml', // or /rss.xml

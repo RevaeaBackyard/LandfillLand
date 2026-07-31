@@ -83,6 +83,10 @@ export interface ThemeConfig {
     apiflashKey?: string
   }
   footer: {
+    siteLinks: {
+      name: string
+      url: string
+    }[]
     links: {
       name: string
       url: string
