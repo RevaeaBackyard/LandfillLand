@@ -65,9 +65,9 @@ const socialLinks = links.map(({ name, url }) => {
   lg="uno-desktop-column bottom-20 text-3.5"
 >
   <nav aria-label="Profile links">
-    <ul class="m-0 flex flex-wrap list-none items-center gap-x-3 p-0">
+    <ul class="footer-links m-0 flex flex-wrap list-none items-center gap-x-2 p-0">
       {socialLinks.map(link => (
-        <li class="m-0">
+        <li class="m-0 flex items-center gap-x-2">
           <a class="highlight-hover py-0.8 transition-colors after:bottom-0.35em hover:c-primary" {...link}>{link.name}</a>
         </li>
       ))}
@@ -75,9 +75,9 @@ const socialLinks = links.map(({ name, url }) => {
   </nav>
 
   <nav class="mt-1 border-t border-secondary/10 pt-1" aria-label="Related websites">
-    <ul class="m-0 flex flex-wrap list-none items-center gap-x-3 p-0">
+    <ul class="footer-links m-0 flex flex-wrap list-none items-center gap-x-2 p-0">
       {relatedLinks.map(link => (
-        <li class="m-0">
+        <li class="m-0 flex items-center gap-x-2">
           <a class="highlight-hover py-0.8 transition-colors after:bottom-0.35em hover:c-primary" {...link}>{link.name}</a>
         </li>
       ))}
@@ -88,3 +88,9 @@ const socialLinks = links.map(({ name, url }) => {
     © {year} {author}
   </p>
 </footer>
+
+<style>
+  .footer-links > li + li::before {
+    content: '/';
+  }
+</style>
