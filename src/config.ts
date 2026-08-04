@@ -182,7 +182,7 @@ export const themeConfig: ThemeConfig = {
       },
       {
         name: 'Redirect',
-        url: 'https://u.i0c.cc',
+        url: 'https://d.i0c.cc',
       },
       {
         name: 'HLS',
