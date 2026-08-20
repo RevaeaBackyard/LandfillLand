@@ -13,12 +13,13 @@
     "lint:fix": "eslint . --fix",
     "new-post": "tsx scripts/new-post.ts",
     "apply-lqip": "tsx scripts/apply-lqip.ts",
+    "generate-favicon": "tsx scripts/generate-favicon.ts",
     "format-posts": "tsx scripts/format-posts.ts",
     "update-theme": "tsx scripts/update-theme.ts"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.3",
     "@astrojs/markdown-remark": "7.2.0",
+    "@astrojs/mdx": "^5.0.3",
     "@astrojs/partytown": "^2.1.6",
     "@astrojs/sitemap": "^3.7.2",
     "@waline/client": "^3.15.2",
