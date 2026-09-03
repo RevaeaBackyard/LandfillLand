@@ -93,7 +93,7 @@ export const themeConfig: ThemeConfig = {
     // giscus
     // https://giscus.app/
     giscus: {
-      repo: 'LandfillLand/LandfillLand',
+      repo: 'RevaeaBackyard/LandfillLand',
       repoId: 'R_kgDOQwiXzg',
       category: 'Show and tell',
       categoryId: 'DIC_kwDOQwiXzs4C0Weo',
