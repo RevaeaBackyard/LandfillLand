@@ -28,7 +28,7 @@
     "astro-og-canvas": "^0.13.2",
     "canvaskit-wasm": "^0.42.0",
     "feed": "^5.2.1",
-    "katex": "^0.18.11",
+    "katex": "^0.19.0",
     "lite-youtube-embed": "^0.3.4",
     "markdown-it": "^14.3.2",
     "mdast-util-to-string": "^4.0.0",
@@ -73,7 +73,13 @@
       "esbuild",
       "sharp",
       "simple-git-hooks"
-    ]
+    ],
+    "overrides": {
+      "astro-compress>deepmerge-ts": "^8.0.0",
+      "astro-compress>sharp": "^0.35.5",
+      "astro-compress>svgo": "^4.1.0",
+      "katex@<0.18.2": "^0.19.0"
+    }
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
