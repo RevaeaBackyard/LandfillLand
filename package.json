@@ -75,10 +75,14 @@
       "simple-git-hooks"
     ],
     "overrides": {
-      "astro-compress>deepmerge-ts": "^8.0.0",
       "astro-compress>sharp": "^0.35.5",
       "astro-compress>svgo": "^4.1.0",
-      "katex@<0.18.2": "^0.19.0"
+      "katex@<0.18.2": "^0.19.0",
+      "deepmerge-ts@<8": "^8.0.0"
+    },
+    "patchedDependencies": {
+      "braces@3.0.3": "patches/braces@3.0.3.patch",
+      "@unocss/transformer-directives@66.10.5": "patches/@unocss__transformer-directives@66.10.5.patch"
     }
   },
   "simple-git-hooks": {

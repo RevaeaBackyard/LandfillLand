@@ -21,6 +21,10 @@ jobs:
       - name: Capture dependency audit
         if: always()
         run: pnpm audit --json > dependency-audit.json || test -s dependency-audit.json
+      - name: Format imported regression tests
+        run: pnpm exec eslint scripts/check-braces-security.cjs --fix
+      - name: Security regression tests
+        run: node scripts/check-braces-security.cjs
       - name: Lint
         run: pnpm lint
       - name: Build and type check
@@ -35,4 +39,5 @@ jobs:
             pnpm-lock.yaml
             dependency-audit.json
             dist/_astro/*.css
+            scripts/check-braces-security.cjs
           retention-days: 7

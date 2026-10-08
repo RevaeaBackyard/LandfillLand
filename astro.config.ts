@@ -108,8 +108,6 @@ export default defineConfig({
       },
     ],
     build: {
-      // Keep the pre-Vite 8 CSS minifier for UnoCSS compatibility.
-      cssMinify: 'esbuild',
       chunkSizeWarningLimit: 600,
     },
   },
