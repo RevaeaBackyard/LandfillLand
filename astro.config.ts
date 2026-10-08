@@ -29,6 +29,8 @@ const imageConfig = imageHostURL
 export default defineConfig({
   site,
   base,
+  // Preserve Astro 6 inline whitespace when upgrading to Astro 7.
+  compressHTML: true,
   trailingSlash: 'always', // Not recommended to change
   prefetch: {
     prefetchAll: true,
