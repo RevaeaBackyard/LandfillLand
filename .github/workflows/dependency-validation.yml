@@ -16,13 +16,11 @@ jobs:
           node-version: '24'
       - name: Install pinned package manager
         run: npm install --global pnpm@10.33.0
-      - name: Resolve dependency lockfile
-        run: pnpm update --depth Infinity
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
       - name: Capture dependency audit
         if: always()
         run: pnpm audit --json > dependency-audit.json || test -s dependency-audit.json
-      - name: Format imported regression tests
-        run: pnpm exec eslint scripts/check-braces-security.cjs --fix
       - name: Security regression tests
         run: node scripts/check-braces-security.cjs
       - name: Lint
@@ -30,6 +28,10 @@ jobs:
       - name: Build and type check
         if: success() || failure()
         run: pnpm build
+      - name: Install browser for smoke checks
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Browser smoke checks
+        run: node scripts/check-site-smoke.mjs
       - name: Upload resolution and validation evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -40,4 +42,5 @@ jobs:
             dependency-audit.json
             dist/_astro/*.css
             scripts/check-braces-security.cjs
+            smoke-results
           retention-days: 7
