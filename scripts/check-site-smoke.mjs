@@ -29,7 +29,7 @@ try {
   for (const pathname of ['/', '/zh/', '/about/', '/tags/', '/posts/chapter-1-chaos-within-contemplation/']) {
     const response = await page.goto(`${origin}${pathname}`, { waitUntil: 'networkidle' })
     assert.equal(response.status(), 200, pathname)
-    assert.ok((await page.locator('main').innerText()).trim().length > 10, `${pathname} has content`)
+    assert.ok((await page.locator('main').textContent()).trim().length > 10, `${pathname} has content`)
     assert.ok(await page.locator('#theme-toggle-button').isVisible(), `${pathname} theme control is visible`)
   }
   await page.goto(origin, { waitUntil: 'networkidle' })
