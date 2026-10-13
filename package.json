@@ -23,7 +23,7 @@
     "@astrojs/partytown": "^2.1.8",
     "@astrojs/sitemap": "^3.7.4",
     "@waline/client": "^3.16.0",
-    "astro": "^7.3.7",
+    "astro": "^7.3.8",
     "astro-compress": "^2.4.3",
     "astro-og-canvas": "^0.13.2",
     "canvaskit-wasm": "^0.42.0",
