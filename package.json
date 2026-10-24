@@ -78,7 +78,10 @@
       "astro-compress>sharp": "^0.35.5",
       "astro-compress>svgo": "^4.1.0",
       "deepmerge-ts@<8": "^8.0.0",
-      "katex@<0.18.2": "^0.19.0"
+      "dompurify@<3.4.17": "^3.4.17",
+      "fast-uri@>=3.0.0 <3.1.9": "^3.1.9",
+      "katex@<0.18.2": "^0.19.0",
+      "zod@>=4.0.0 <4.6.6": "^4.6.7"
     },
     "patchedDependencies": {
       "@unocss/transformer-directives@66.10.5": "patches/@unocss__transformer-directives@66.10.5.patch",

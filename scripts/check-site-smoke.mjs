@@ -33,11 +33,27 @@ try {
     assert.ok(await page.locator('#theme-toggle-button').isVisible(), `${pathname} theme control is visible`)
   }
   await page.goto(origin, { waitUntil: 'networkidle' })
+  // Exercise the shipped Mermaid bundle and its DOMPurify dependency, including
+  // the site's lazy renderer and theme-change path, without publishing a fixture.
+  await page.evaluate(() => {
+    const diagram = document.createElement('pre')
+    diagram.id = 'dependency-smoke-mermaid'
+    diagram.className = 'mermaid'
+    diagram.textContent = 'flowchart LR\n  A["<b>Safe label</b>"] --> B["Rendered"]'
+    document.querySelector('main').prepend(diagram)
+    document.dispatchEvent(new Event('astro:page-load'))
+  })
+  const diagram = page.locator('#dependency-smoke-mermaid svg')
+  await diagram.waitFor({ state: 'visible' })
+  assert.ok((await diagram.textContent()).includes('Safe label'), 'Mermaid preserves sanitized labels')
+  assert.equal(await diagram.locator('script, [onerror], [onload]').count(), 0, 'Mermaid output has no executable markup')
   const initialDark = await page.locator('html').evaluate(node => node.classList.contains('dark'))
   await page.locator('#theme-toggle-button').click()
   await page.waitForFunction(initial => document.documentElement.classList.contains('dark') !== initial, initialDark)
+  await diagram.waitFor({ state: 'visible' })
   await page.locator('#theme-toggle-button').click()
   await page.waitForFunction(initial => document.documentElement.classList.contains('dark') === initial, initialDark)
+  await diagram.waitFor({ state: 'visible' })
   await page.locator('#language-switcher').click()
   await page.waitForURL('**/zh/')
   await page.goBack({ waitUntil: 'networkidle' })
@@ -51,7 +67,7 @@ try {
   for (const pathname of ['/rss.xml', '/zh/rss.xml', '/sitemap-index.xml', '/robots.txt'])
     assert.equal((await fetch(`${origin}${pathname}`)).status, 200, pathname)
   assert.deepEqual(errors, [], 'Site scripts must not throw')
-  console.log('Site smoke checks passed: routes, navigation, themes, mobile controls, feeds and sitemap')
+  console.log('Site smoke checks passed: routes, navigation, Mermaid rendering, themes, mobile controls, feeds and sitemap')
 }
 finally {
   await browser?.close()
