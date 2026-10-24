@@ -43,9 +43,13 @@ try {
     document.querySelector('main').prepend(diagram)
     document.dispatchEvent(new Event('astro:page-load'))
   })
-  const diagram = page.locator('#dependency-smoke-mermaid svg')
+  // Mermaid first inserts a temporary SVG inside a div, then replaces it with
+  // the final sanitized direct child after its asynchronous render completes.
+  const diagram = page.locator('#dependency-smoke-mermaid > svg')
   await diagram.waitFor({ state: 'visible' })
-  assert.ok((await diagram.textContent()).includes('Safe label'), 'Mermaid preserves sanitized labels')
+  await page.screenshot({ path: 'smoke-results/mermaid.png', fullPage: true })
+  const labelText = await diagram.textContent()
+  assert.ok(labelText.includes('Safe label'), `Mermaid preserves sanitized labels: ${labelText}`)
   assert.equal(await diagram.locator('script, [onerror], [onload]').count(), 0, 'Mermaid output has no executable markup')
   const initialDark = await page.locator('html').evaluate(node => node.classList.contains('dark'))
   await page.locator('#theme-toggle-button').click()
