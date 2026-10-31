@@ -9,38 +9,84 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        installation: [clean, cached-upgrade]
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
       - name: Install pinned package manager
         run: npm install --global pnpm@10.33.0
+      - name: Prepare installation scenario
+        id: workspace
+        env:
+          INSTALLATION: ${{ matrix.installation }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          site_dir="$GITHUB_WORKSPACE"
+          if [[ "$INSTALLATION" == cached-upgrade ]]; then
+            site_dir="$RUNNER_TEMP/landfill-cached-site"
+            git worktree add --detach "$site_dir" "$BASE_SHA"
+            pnpm --dir "$site_dir" install --frozen-lockfile
+            if node scripts/check-unocss-resolution.mjs "$site_dir" > unocss-baseline.log 2>&1; then
+              echo "Base installation has complete UnoCSS runtime links"
+            else
+              echo "Base installation cannot load isolated autocomplete:"
+              cat unocss-baseline.log
+            fi
+            git -C "$site_dir" checkout --detach "$HEAD_SHA"
+          fi
+          echo "path=$site_dir" >> "$GITHUB_OUTPUT"
       - name: Install locked dependencies
-        run: pnpm install --frozen-lockfile
+        working-directory: ${{ steps.workspace.outputs.path }}
+        env:
+          INSTALLATION: ${{ matrix.installation }}
+        run: |
+          if [[ "$INSTALLATION" == clean ]]; then
+            pnpm install --frozen-lockfile --config.hoist=false
+          else
+            pnpm install --frozen-lockfile
+          fi
+      - name: Check isolated UnoCSS runtime dependencies
+        working-directory: ${{ steps.workspace.outputs.path }}
+        run: node scripts/check-unocss-resolution.mjs
       - name: Capture dependency audit
         if: always()
-        run: pnpm audit --json > dependency-audit.json || test -s dependency-audit.json
+        working-directory: ${{ steps.workspace.outputs.path }}
+        run: pnpm audit --json --registry=https://registry.npmjs.org > dependency-audit.json || test -s dependency-audit.json
       - name: Security regression tests
+        working-directory: ${{ steps.workspace.outputs.path }}
         run: node scripts/check-braces-security.cjs
       - name: Lint
+        working-directory: ${{ steps.workspace.outputs.path }}
         run: pnpm lint
       - name: Build and type check
         if: success() || failure()
+        working-directory: ${{ steps.workspace.outputs.path }}
         run: pnpm build
       - name: Install browser for smoke checks
+        working-directory: ${{ steps.workspace.outputs.path }}
         run: pnpm exec playwright install --with-deps chromium
       - name: Browser smoke checks
+        working-directory: ${{ steps.workspace.outputs.path }}
         run: node scripts/check-site-smoke.mjs
       - name: Upload resolution and validation evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dependency-validation
+          name: dependency-validation-${{ matrix.installation }}
           path: |
-            pnpm-lock.yaml
-            dependency-audit.json
-            dist/_astro/*.css
-            scripts/check-braces-security.cjs
-            smoke-results
+            ${{ steps.workspace.outputs.path }}/pnpm-lock.yaml
+            ${{ steps.workspace.outputs.path }}/dependency-audit.json
+            ${{ steps.workspace.outputs.path }}/dist/_astro/*.css
+            ${{ steps.workspace.outputs.path }}/scripts/check-braces-security.cjs
+            ${{ steps.workspace.outputs.path }}/smoke-results
+            unocss-baseline.log
           retention-days: 7

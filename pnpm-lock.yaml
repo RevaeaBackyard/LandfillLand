@@ -11,8 +11,10 @@ overrides:
   dompurify@<3.4.17: ^3.4.17
   fast-uri@>=3.0.0 <3.1.9: ^3.1.9
   katex@<0.18.2: ^0.19.0
-  zod@>=4.0.0 <4.6.6: ^4.6.7
   minimatch: 11.0.1
+  zod@>=4.0.0 <4.6.6: ^4.6.7
+
+packageExtensionsChecksum: sha256-ECjuCLMYL2TNiTTmb2PcKPSMsbRecw3jrnE9pVb4Omw=
 
 patchedDependencies:
   braces@3.0.3:
@@ -6149,6 +6151,7 @@ snapshots:
 
   '@unocss/autocomplete@66.11.0':
     dependencies:
+      '@unocss/core': 66.11.0
       fzf: 0.5.2
       lru-cache: 11.5.3
 
