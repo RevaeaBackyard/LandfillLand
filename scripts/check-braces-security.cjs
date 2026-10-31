@@ -6,12 +6,19 @@
 const assert = require('node:assert/strict')
 const { spawnSync } = require('node:child_process')
 const fs = require('node:fs')
+const { createRequire } = require('node:module')
 const path = require('node:path')
 const process = require('node:process')
 
+function findInstalledBraces() {
+  const fastGlobRequire = createRequire(require.resolve('fast-glob'))
+  const micromatchRequire = createRequire(fastGlobRequire.resolve('micromatch'))
+  return path.dirname(micromatchRequire.resolve('braces/package.json'))
+}
+
 const target = process.argv[2]
   ? path.resolve(process.argv[2])
-  : path.resolve('node_modules/.pnpm/node_modules/braces')
+  : findInstalledBraces()
 assert.ok(fs.existsSync(path.join(target, 'package.json')), `Missing local braces installation: ${target}`)
 const braces = require(target)
 assert.equal(require(path.join(target, 'package.json')).version, '3.0.3')
