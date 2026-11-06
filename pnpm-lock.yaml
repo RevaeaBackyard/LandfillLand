@@ -14,7 +14,7 @@ overrides:
   minimatch: 11.0.1
   zod@>=4.0.0 <4.6.6: ^4.6.7
 
-packageExtensionsChecksum: sha256-ECjuCLMYL2TNiTTmb2PcKPSMsbRecw3jrnE9pVb4Omw=
+packageExtensionsChecksum: sha256-UL4Iy2rMMXMvqrtsJjhvk0v2zmLGNpalIAcuxfHIcBU=
 
 patchedDependencies:
   braces@3.0.3:
@@ -6155,6 +6155,7 @@ snapshots:
 
   '@unocss/autocomplete@66.12.0':
     dependencies:
+      '@unocss/core': 66.12.0
       fzf: 0.5.2
       lru-cache: 11.5.3
 
