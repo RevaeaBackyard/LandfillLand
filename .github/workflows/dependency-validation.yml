@@ -57,6 +57,9 @@ jobs:
       - name: Check isolated UnoCSS runtime dependencies
         working-directory: ${{ steps.workspace.outputs.path }}
         run: node scripts/check-unocss-resolution.mjs
+      - name: Check Astro type-checker runtime
+        working-directory: ${{ steps.workspace.outputs.path }}
+        run: node scripts/check-astro-toolchain.mjs
       - name: Capture dependency audit
         if: always()
         working-directory: ${{ steps.workspace.outputs.path }}

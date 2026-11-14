@@ -1,5 +1,11 @@
 # Dependency compatibility and security patches
 
+## Astro type-checker runtime
+
+The lockfile uses the upstream `@astrojs/astro2tsx` 0.1.4 fix, which declares `@emnapi/runtime` 1.11.3 alongside its matching core. Version 0.1.3 omitted the runtime dependency, allowing an unrelated 2.0 beta peer to enter the checker graph. The resulting WASM initialization failure was reported by `astro check` as a missing `@astrojs/check` installation.
+
+Run `node scripts/check-astro-toolchain.mjs` after installation. It imports the actual checker dependency graph and converts a typed Astro fixture to TSX with source mappings. CI runs this in both clean and cached-upgrade installations, followed by the full type check and build. No local package patch or type-check bypass is used.
+
 ## braces 3.0.3
 
 Local mitigation for GHSA-vfj7-8cjw-p6xm, which has no upstream fixed release as of 2026-10-08. Caps brace/parenthesis nesting at 100 and guards recursive compile, expand and stringify entry points, including directly supplied ASTs. The dependency is used by build-time glob tooling; arbitrary untrusted glob expansion should still be avoided.
